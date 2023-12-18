@@ -2,7 +2,7 @@ import random
 import webbrowser
 import requests
 import bs4
-
+import time
 
 valid_letters = "qwertyuiopasdfghjklzxcvbnm"
 
@@ -90,14 +90,16 @@ def hangman():
             break
 
 def get_random_words():
-    url = 'https://randomwordgenerator.com/'
-    response = requests.get(url)
+    url = 'https://commentpicker.com/random-word-generator.php'
+    response = requests.get(url) # goes to link
 # html = hyper text machine language
-    if response.status_code == 200:
-        soup = bs4.BeautifulSoup(requests.text, 'html.parser')
-        # print(soup)
-        word_elements = soup.find_all("li", class_ = "support")
-        for words in word_elements:
-            print(words)
+    if response.status_code == 200: # if link went through
+        soup = bs4.BeautifulSoup(response.text, 'html.parser')
+        time.sleep(2)
+    else:
+        print(f"Failed to retrieve page, status code: {response.status_code}")
+        return None
+    for text in soup.find_all():
+        print(text)
 # hangman()
 get_random_words()
